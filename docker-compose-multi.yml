@@ -1,0 +1,81 @@
+services:
+  php:
+    image: php:latest
+    container_name: php_container
+    volumes:
+      - ./workspace/php:/usr/src/app
+    working_dir: /usr/src/app
+    command: php index.php
+    ports:
+      - "8000:8000"
+
+  ruby:
+    image: ruby:latest
+    container_name: ruby_container
+    volumes:
+      - ./workspace/ruby:/usr/src/app
+    working_dir: /usr/src/app
+    command: ruby main.rb
+    stdin_open: true
+    tty: true
+
+  python:
+    image: python:latest
+    container_name: python_container
+    volumes:
+      - ./workspace/python:/usr/src/app
+    working_dir: /usr/src/app
+    command: python3 main.py
+    stdin_open: true
+    tty: true
+
+  lua:
+    image: nickblah/lua:latest
+    container_name: lua_container
+    volumes:
+      - ./workspace/lua:/usr/src/app
+    working_dir: /usr/src/app
+    command: lua main.lua
+    stdin_open: true
+    tty: true
+
+  rust:
+    image: rust:latest
+    container_name: rust_container
+    volumes:
+      - ./workspace/rust:/usr/src/app
+    working_dir: /usr/src/app
+    command: cargo run
+    stdin_open: true
+    tty: true
+
+  cpp:
+    image: gcc:latest
+    container_name: cpp_container
+    volumes:
+      - ./workspace/cpp:/usr/src/app
+    working_dir: /usr/src/app
+    command: bash -c "g++ main.cpp -o main && ./main"
+    stdin_open: true
+    tty: true
+
+  java:
+    image: openjdk:latest
+    container_name: java_container
+    volumes:
+      - ./workspace/java:/usr/src/app
+    working_dir: /usr/src/app
+    command: bash -c "javac Main.java && java Main"
+    stdin_open: true
+    tty: true
+
+  golang:
+    image: golang:latest
+    container_name: golang_container
+    volumes:
+      - ./workspace/golang:/usr/src/app
+    working_dir: /usr/src/app
+    command: go run main.go
+    stdin_open: true
+    tty: true
+

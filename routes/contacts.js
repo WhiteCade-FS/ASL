@@ -19,7 +19,7 @@ router.get("/", (req, res) => {
         try {
             results = filterContacts(filterBy, filterOp, filterValue, results);
         } catch (error) {
-            console.error("❌ Filtering error:", error.message);
+            console.error("Filtering error:", error.message);
             if (error.name === "NoContactsFoundError") {
                 return res.status(404).json({ message: "No contacts found matching the filter." });
             }

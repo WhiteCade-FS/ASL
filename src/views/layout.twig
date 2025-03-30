@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Space Library{% endblock %}</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>🌌 Star Tracker Library</h1>
+    <nav>
+      <a href="/galaxies">Galaxies</a> |
+      <a href="/stars">Stars</a> |
+      <a href="/planets">Planets</a>
+    </nav>
+    <hr>
+  </header>
+
+  <main>
+    {% block content %}
+    
+    {% endblock %}
+  </main>
+
+  <footer>
+    <hr>
+    <p>&copy; 2025 Space Tracker Inc.</p>
+  </footer>
+</body>
+</html>
+

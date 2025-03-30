@@ -1,0 +1,11 @@
+{% extends "layout.twig" %}
+{% block title %}Edit Star{% endblock %}
+{% block content %}
+  <h2>Edit Star</h2>
+  {% include "stars/_form.twig" with {
+    action: '/stars/' ~ star.id ~ '/update',
+    buttonLabel: 'Update Star',
+    star: star
+  } %}
+{% endblock %}
+

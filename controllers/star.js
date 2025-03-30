@@ -1,59 +1,82 @@
 const { Star, Planet } = require('../src/models');
+const path = require('path');
 
 // Show all resources
 const index = async (req, res) => {
-  // Respond with an array and 2xx status code
-  const stars = await Star.findAll({
-    include: ['Planets']
-  });
-    res.status(200).json(stars);
-}
-
+  const stars = await Star.findAll();
+  if (req.headers.accept?.includes('application/json')) {
+    return res.json(stars);
+  }
+  res.render('stars/index.twig', { stars });
+};
 // Show resource
 const show = async (req, res) => {
-  // Respond with a single object and 2xx code
   const star = await Star.findByPk(req.params.id);
-  res.status(200).json(star);
-}
+  if (req.headers.accept?.includes('application/json')) {
+    return res.json(star);
+  }
+  res.render('stars/show.twig', { star });
+};
+
+const newStar = (req, res) => {
+  res.render('stars/create.twig');
+};
+
 
 // Create a new resource
 const create = async (req, res) => {
-  // Issue a redirect with a success 2xx code
-  const star = await Star.create(req.body);
+  let imageName = null;
 
-  const { planetId } = req.body;
+  const star = await Star.create({
+    name: req.body.name,
+    size: req.body.size,
+    description: req.body.description
+  });
 
-  if (planetId) {
-    const planet = await Planet.findByPk(planetId);
-    if (planet) {
-      await star.addPlanet(planet);
-    }
+  if (req.files?.image) {
+    const extension = path.extname(req.files.image.name);
+    imageName = `${star.id}${extension}`;
+    const uploadPath = path.join(__dirname, '..', 'public', 'uploads', 'stars', imageName);
+    await req.files.image.mv(uploadPath);
+    await star.update({ image: imageName });
   }
 
+  res.redirect(`/stars/${star.id}`);
+};
 
-  const starPlanet = await Star.findByPk(star.id, { include: ['Planets']})
-  res.status(201).json(starPlanet);
-}
+const editStar = async (req, res) => {
+  const star = await Star.findByPk(req.params.id);
+  res.render('stars/edit.twig', { star });
+};
+
 
 // Update an existing resource
 const update = async (req, res) => {
-  // Respond with a single resource and 2xx code
   const star = await Star.findByPk(req.params.id);
-  if (!star) return res.status(404).json({error: 'Star not found'});
-  await star.update(req.body);
-  res.status(200).json(star);
-}
+  if (!star) return res.status(404).json({ error: 'Star not found' });
 
+  await star.update({
+    name: req.body.name,
+    size: req.body.size,
+    description: req.body.description
+  });
+
+  if (req.files?.image) {
+    const extension = path.extname(req.files.image.name);
+    const imageName = `${star.id}${extension}`;
+    const uploadPath = path.join(__dirname, '..', 'public', 'uploads', 'stars', imageName);
+    await req.files.image.mv(uploadPath);
+    await star.update({ image: imageName });
+  }
+
+  res.redirect(`/stars/${star.id}`);
+};
 // Remove a single resource
 const remove = async (req, res) => {
-  // Respond with a 2xx status code and bool
   const star = await Star.findByPk(req.params.id);
-  if (!star) return res.status(404).json({error: 'Star not found'});
+  if (!star) return res.status(404).json({ error: 'Star not found' });
   await star.destroy();
-  res.status(204).send();
-}
-
+  res.redirect('/stars');
+};
 // Export all controller actions
-module.exports = { index, show, create, update, remove }
-
-
+module.exports = { index, show, create, update, remove, newStar, editStar };

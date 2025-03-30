@@ -1,0 +1,22 @@
+{% extends "layout.twig" %}
+
+{% block title %}Galaxy: {{ galaxy.name }}{% endblock %}
+
+{% block content %}
+  <h2>{{ galaxy.name }}</h2>
+  <p><strong>Size:</strong> {{ galaxy.size }}</p>
+  <p><strong>Description:</strong> {{ galaxy.description }}</p>
+
+  {% if galaxy.image %}
+    <p><img src="/uploads/{{ galaxy.image }}" alt="{{ galaxy.name }}" width="300"></p>
+    {% else %}
+  <p><em>No image available</em></p>
+  {% endif %}
+
+  <a href="/galaxies/{{ galaxy.id }}/edit">✏️ Edit</a> |
+  <form action="/galaxies/{{ galaxy.id }}/delete" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Delete this galaxy?')">🗑 Delete</button>
+  </form> |
+  <a href="/galaxies">← Back to all Galaxies</a>
+{% endblock %}
+

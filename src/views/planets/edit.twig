@@ -1,0 +1,12 @@
+{% extends "layout.twig" %}
+
+{% block title %}Edit Planet{% endblock %}
+
+{% block content %}
+  <h2>Edit Planet</h2>
+  {% include "planets/_form.twig" with {
+    action: '/planets/' ~ planet.id ~ '/update',
+    buttonLabel: 'Update Planet',
+    planet: planet
+  } %}
+{% endblock %}

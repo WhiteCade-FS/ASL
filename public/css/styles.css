@@ -1,0 +1,74 @@
+body {
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  color: #ffffff;
+  font-family: 'Orbitron', sans-serif;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 3rem;
+  flex-direction: column;
+}
+
+
+
+
+
+header, footer {
+  text-align: center;
+}
+
+h1, h2, h3 {
+  color: #00ffe7;
+  text-shadow: 0 0 3px #00ffe7, 0 0 2px #00ffe7;
+}
+
+button {
+  background-color: #0b3d91;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #00ffe7;
+}
+
+button:hover {
+  background-color: #1e60ff;
+}
+
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #0077cc;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+
+.container {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px;
+  backdrop-filter: blur(10px);
+}
+
+a {
+  color: #00bfff; 
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #00bfff; 
+}

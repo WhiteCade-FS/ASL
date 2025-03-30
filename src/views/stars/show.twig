@@ -1,0 +1,18 @@
+{% extends "layout.twig" %}
+{% block title %}Star: {{ star.name }}{% endblock %}
+{% block content %}
+  <h2>{{ star.name }}</h2>
+  <p><strong>Size:</strong> {{ star.size }}</p>
+  <p><strong>Description:</strong> {{ star.description }}</p>
+
+  {% if star.image %}
+    <p><img src="/uploads/stars/{{ star.image }}" alt="{{ star.name }}" width="300"></p>
+  {% endif %}
+
+  <a href="/stars/{{ star.id }}/edit">✏️ Edit</a> |
+  <form action="/stars/{{ star.id }}/delete" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Delete this star?')">🗑 Delete</button>
+  </form> |
+  <a href="/stars">← Back to all Stars</a>
+{% endblock %}
+

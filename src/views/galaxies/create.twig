@@ -1,0 +1,12 @@
+{% extends "layout.twig" %}
+
+{% block title %}Create Galaxy{% endblock %}
+
+{% block content %}
+  <h2>Create Galaxy</h2>
+  {% include "galaxies/_form.twig" with {
+    action: '/galaxies',
+    buttonLabel: 'Create Galaxy',
+    galaxy: {}
+  } %}
+{% endblock %}

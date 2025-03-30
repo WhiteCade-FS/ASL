@@ -1,0 +1,18 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ planet.name }}{% endblock %}
+
+{% block content %}
+  <h2>{{ planet.name }}</h2>
+  <p><strong>Size:</strong> {{ planet.size }}</p>
+  <p><strong>Description:</strong> {{ planet.description }}</p>
+  {% if planet.image %}
+    <img src="/uploads/planets/{{ planet.image }}" alt="{{ planet.name }}" width="300">
+  {% endif %}
+  <br>
+  <a href="/planets/{{ planet.id }}/edit">✏️ Edit</a> |
+  <form action="/planets/{{ planet.id }}/delete" method="POST" style="display:inline;">
+    <button type="submit" onclick="return confirm('Are you sure?')">🗑 Delete</button>
+  </form> |
+  <a href="/planets">← Back to all Planets</a>
+{% endblock %}

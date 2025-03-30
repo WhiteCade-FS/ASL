@@ -1,47 +1,77 @@
 const { Planet } = require('../src/models');
+const path = require('path');
 
-// Show all resources
 const index = async (req, res) => {
-  // Respond with an array and 2xx status code
-  const planets = await Planet.findAll({
-    include: ['Stars']
-  });
-    res.status(200).json(planets);
-}
+  const planets = await Planet.findAll();
+  if (req.headers.accept?.includes('application/json')) {
+    return res.json(planets);
+  }
+  res.render('planets/index.twig', { planets });
+};
 
-// Show resource
 const show = async (req, res) => {
-  // Respond with a single object and 2xx code
   const planet = await Planet.findByPk(req.params.id);
-  res.status(200).json(planet);
-}
+  if (req.headers.accept?.includes('application/json')) {
+    return res.json(planet);
+  }
+  res.render('planets/show.twig', { planet });
+};
 
-// Create a new resource
+const newPlanet = (req, res) => {
+  res.render('planets/create.twig');
+};
+
 const create = async (req, res) => {
-  console.log('REQ.BODY:', req.body);
-  // Issue a redirect with a success 2xx code
-  const planet = await Planet.create(req.body);
-  res.status(201).json(planet);
-}
+  let imageName = null;
 
-// Update an existing resource
+  const planet = await Planet.create({
+    name: req.body.name,
+    size: req.body.size,
+    description: req.body.description
+  });
+
+  if (req.files?.image) {
+    const extension = path.extname(req.files.image.name);
+    imageName = `${planet.id}${extension}`;
+    const uploadPath = path.join(__dirname, '..', 'public', 'uploads', 'planets', imageName);
+    await req.files.image.mv(uploadPath);
+    await planet.update({ image: imageName });
+  }
+
+  res.redirect(`/planets/${planet.id}`);
+};
+
+const editPlanet = async (req, res) => {
+  const planet = await Planet.findByPk(req.params.id);
+  res.render('planets/edit.twig', { planet });
+};
+
 const update = async (req, res) => {
-  // Respond with a single resource and 2xx code
   const planet = await Planet.findByPk(req.params.id);
-  if (!galaxy) return res.status(404).json({error: 'Planet not found'});
-  await planet.update(req.body);
-  res.status(200).json(planet);
-}
+  if (!planet) return res.status(404).json({ error: 'Planet not found' });
 
-// Remove a single resource
+  await planet.update({
+    name: req.body.name,
+    size: req.body.size,
+    description: req.body.description
+  });
+
+  if (req.files?.image) {
+    const extension = path.extname(req.files.image.name);
+    const imageName = `${planet.id}${extension}`;
+    const uploadPath = path.join(__dirname, '..', 'public', 'uploads', 'planets', imageName);
+    await req.files.image.mv(uploadPath);
+    await planet.update({ image: imageName });
+  }
+
+  res.redirect(`/planets/${planet.id}`);
+};
+
 const remove = async (req, res) => {
-  // Respond with a 2xx status code and bool
   const planet = await Planet.findByPk(req.params.id);
-  if (!planet) return res.status(404).json({error: 'Planet not found'});
+  if (!planet) return res.status(404).json({ error: 'Planet not found' });
   await planet.destroy();
-  res.status(204).send();
-}
+  res.redirect('/planets');
+};
 
-// Export all controller actions
-module.exports = { index, show, create, update, remove }
-
+module.exports = { index, show, create, update, remove, newPlanet, editPlanet };

@@ -1,0 +1,22 @@
+<form action="{{ action }}" method="POST" enctype="multipart/form-data">
+  <label>Name:</label><br>
+  <input type="text" name="name" value="{{ planet.name | default('') }}" required><br><br>
+
+  <label>Size:</label><br>
+  <input type="number" name="size" value="{{ planet.size | default('') }}" required><br><br>
+
+  <label>Description:</label><br>
+  <textarea name="description" rows="4">{{ planet.description | default('') }}</textarea><br><br>
+
+  {% if planet.image %}
+    <label>Current Image:</label><br>
+    <img src="/uploads/planets/{{ planet.image }}" alt="Planet Image" width="200"><br><br>
+  {% endif %}
+
+  <label>Upload Image:</label><br>
+  <input type="file" name="image"><br><br>
+
+  <button type="submit">{{ buttonLabel }}</button>
+</form>
+<br><a href="/planets">← Back to Planets</a>
+

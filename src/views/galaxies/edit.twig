@@ -1,0 +1,12 @@
+{% extends "layout.twig" %}
+
+{% block title %}Edit Galaxy{% endblock %}
+
+{% block content %}
+  <h2>Edit Galaxy</h2>
+  {% include "galaxies/_form.twig" with {
+    action: '/galaxies/' ~ galaxy.id ~ '/update',
+    buttonLabel: 'Update Galaxy',
+    galaxy: galaxy
+  } %}
+{% endblock %}
